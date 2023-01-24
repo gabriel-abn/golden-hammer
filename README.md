@@ -1,7 +1,7 @@
 # Golden Hammer Mechanics
 	Requisitos:
 
- - [x] A página deve conter um formulário para cadastro de manutenções. </br>
+ - [] A página deve conter um formulário para cadastro de manutenções. </br>
  - [x] O formulário deve conter os seguintes campos: - Nome do proprietário - Placa do veículo - Data da manutenção - Tipo de manutenção - Valor da manutenção - Observações</br>
  - [x] O formulário deve conter um botão para salvar os dados.</br>
  - [x] A página deve conter uma tabela com os dados de todas as manutenções cadastradas.</br>
