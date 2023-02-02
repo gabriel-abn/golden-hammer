@@ -13,6 +13,7 @@
     "typescript": "^4.9.4"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --max-workers=50%",
+    "test:watch": "jest --max-workers=50% --watch"
   }
 }
