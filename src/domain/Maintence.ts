@@ -20,15 +20,35 @@ export type MaintenceProps = {
 export class Maintence {
   private constructor(private params: MaintenceProps) {}
 
+  public getInfo() {
+    return {
+      status: this.params.status,
+      price: this.params.price,
+      description: this.params.description,
+    };
+  }
+
+  public getDescription() {
+    return this.params.description;
+  }
+
   public static create(props: MaintenceProps): Maintence {
     var errors: string[] = [];
 
-    if (props.expectedDate.getTime() < Date.now()) {
+    if (props.expectedDate.getTime() < props.initialDate.getTime()) {
       errors.push("Invalid Expectation Date");
     }
 
     if (props.price < 50) {
       errors.push("Invalid price. Minimum price is 50");
+    }
+
+    if (props.description == "" || props.description == " ") {
+      errors.push("Invalid description");
+    }
+
+    if (props.expectedDate.getTime() <= Date.now()) {
+      props.status = MaintenceStatus.EM_ATRASO;
     }
 
     if (errors.length > 0) {
