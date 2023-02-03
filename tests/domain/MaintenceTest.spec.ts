@@ -15,7 +15,10 @@ describe("Maintence Tests", () => {
     expect(maintence).toThrow(DomainError);
   });
   it('should have "EM ATRASO" status if expected date expired', () => {
-    const { mock } = maintenceMock({ expectedDate: new Date(2023, 1, 1) });
+    const { mock } = maintenceMock({
+      initialDate: new Date(2023, 1, 1),
+      expectedDate: new Date(2023, 1, 1),
+    });
 
     expect(mock.getInfo()).toHaveProperty("status", "EM ATRASO");
   });
@@ -25,8 +28,12 @@ describe("Maintence Tests", () => {
     expect(mock).toThrow(DomainError);
   });
   it("should contain a description", () => {
-    const { mock } = maintenceMock({ description: " " });
+    const maintence = () => {
+      const { mock } = maintenceMock({ description: " " });
 
-    expect(mock.getDescription()).not.toBeTruthy();
+      return mock.getDescription();
+    };
+
+    expect(maintence).toThrow(DomainError);
   });
 });
