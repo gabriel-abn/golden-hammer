@@ -5,6 +5,7 @@ export type ClientProps = {
   cpf: string;
   cnh: string;
   birthdate: Date;
+  email: string;
 };
 
 export class Client {

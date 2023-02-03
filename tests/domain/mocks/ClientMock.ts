@@ -8,6 +8,7 @@ export const clientMock = (params: Partial<ClientProps>) => {
     birthdate: params.birthdate
       ? params.birthdate
       : new Date(Date.UTC(2000, 8, 20)),
+    email: params.email ? params.email : "fakeEmail@example.com",
   };
 
   return { mock: Client.create({ ...props }), props: props };
