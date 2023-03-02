@@ -5,4 +5,5 @@ export interface IMaintenceRepository {
   create(maintence: Maintence): Promise<string>;
   getAll(): Promise<MaintenceProps[]>;
   update(maintence: Maintence): Promise<string>;
+  delete(id: string): Promise<boolean>;
 }
