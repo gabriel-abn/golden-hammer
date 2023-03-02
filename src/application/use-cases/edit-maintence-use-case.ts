@@ -1,4 +1,4 @@
-import { MaintenceStatus } from "@domain/Maintence";
+import { Maintence, MaintenceStatus } from "@domain/Maintence";
 import { ApplicationError } from "../common/application-error";
 import { IMaintenceRepository } from "../repositories/maintence-repository";
 
@@ -26,14 +26,26 @@ export class EditMaintenceUseCase {
     data: EditMaintence.Request
   ): Promise<EditMaintence.Response | Error> {
     try {
-      const maintence = await this.repository.getByID(data.id_maintence);
+      let maintenceProps = await this.repository.getByID(data.id_maintence);
 
-      if (!maintence) {
+      if (!maintenceProps) {
         return new ApplicationError(
           "Maintence not found",
           "EditMaintenceUseCase"
         );
       }
+
+      for (const prop in data.maintence) {
+        if (data.maintence[prop]) {
+          maintenceProps[prop] = data.maintence[prop];
+        }
+      }
+
+      const maintence = Maintence.create(maintenceProps);
+
+      const id_maintence = await this.repository.update(maintence);
+
+      return { id_maintence };
     } catch (error) {
       return new ApplicationError("Unexpected error", "EditMaintenceUseCase");
     }
