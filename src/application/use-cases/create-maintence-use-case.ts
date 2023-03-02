@@ -1,6 +1,7 @@
 import { Maintence, MaintenceStatus } from "@domain/Maintence";
 import { ApplicationError } from "../common/application-error";
 import { IIdentifierGenerator } from "../common/identifier-generator";
+import { ICarRepository } from "../repositories/car-respository";
 import { IMaintenceRepository } from "../repositories/maintence-repository";
 
 namespace CreateMainteince {
@@ -20,6 +21,7 @@ namespace CreateMainteince {
 export class CreateMainteinceUseCase {
   constructor(
     private repository: IMaintenceRepository,
+    private carRepository: ICarRepository,
     private idGen: IIdentifierGenerator
   ) {}
 
@@ -32,13 +34,23 @@ export class CreateMainteinceUseCase {
       errors.push("Car already in maintence");
     }
 
+    const car = await this.carRepository.getById(data.id_car);
+
+    if (!car) {
+      errors.push("Car not found");
+    }
+
     if (errors.length > 0) {
       throw new ApplicationError(errors, "Create Mainteince", "error");
     }
 
     const newId = this.idGen.generate();
 
-    const maintence = Maintence.create({ ...data, id_maintence: newId });
+    const maintence = Maintence.create({
+      ...data,
+      id_maintence: newId,
+      id_car: car.id,
+    });
     const maintenceID = await this.repository.create(maintence);
 
     return { maintenceID };
