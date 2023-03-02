@@ -1,7 +1,8 @@
-import { Maintence } from "@domain/Maintence";
+import { Maintence, MaintenceProps } from "@domain/Maintence";
 
 export interface IMaintenceRepository {
-  getByID(id: string): Promise<Maintence>;
+  getByID(id: string): Promise<MaintenceProps>;
   create(maintence: Maintence): Promise<string>;
-  getAll(): Promise<Maintence[]>;
+  getAll(): Promise<MaintenceProps[]>;
+  updateByID(maintence: Maintence): Promise<string>;
 }

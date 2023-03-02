@@ -1,6 +1,6 @@
-import { Client } from "@domain/Client";
+import { Client, ClientProps } from "@domain/Client";
 
 export interface IClientRepository {
   create(client: Client): Promise<string>;
-  getByCPF(cpf: string): Promise<Client>;
+  getByCPF(cpf: string): Promise<ClientProps>;
 }
