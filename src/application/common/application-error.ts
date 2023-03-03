@@ -5,4 +5,8 @@ export class ApplicationError extends Error {
     this.name = name;
     this.errorMessage = message;
   }
+
+  toString(): string | string[] {
+    return this.errorMessage;
+  }
 }
