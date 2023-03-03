@@ -2,7 +2,7 @@ import { Client } from "@domain/Client";
 import { ApplicationError } from "../common/application-error";
 import { IClientRepository } from "../repositories/client-repository";
 
-namespace ResgisterClient {
+export namespace ResgisterClient {
   export type Request = {
     name: string;
     cpf: string;
