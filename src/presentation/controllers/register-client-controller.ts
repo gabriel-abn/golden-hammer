@@ -3,15 +3,34 @@ import {
   ResgisterClient,
   ResgisterClientUseCase,
 } from "@application/use-cases";
-import { ServerError } from "@presentation/errors";
-import { HttpResponse } from "@presentation/protocols";
+import { InvalidMissingParams, ServerError } from "@presentation/errors";
+import { HttpResponse, IParamsValidator } from "@presentation/protocols";
 import { Controller } from "@presentation/protocols/controller";
 
 export class RegisterClientController implements Controller {
-  constructor(private useCase: ResgisterClientUseCase) {}
+  constructor(
+    private useCase: ResgisterClientUseCase,
+    private validator: IParamsValidator
+  ) {}
 
   async handle(request: ResgisterClient.Request): Promise<HttpResponse> {
     try {
+      if (!request) {
+        return {
+          status: 401,
+          body: new InvalidMissingParams("No params were provided").toString(),
+        };
+      }
+
+      const valid = this.validator.validate(request);
+
+      if (valid.length > 0) {
+        return {
+          status: 401,
+          body: new InvalidMissingParams(valid),
+        };
+      }
+
       const response = await this.useCase.execute(request);
 
       if (response instanceof ApplicationError) {
