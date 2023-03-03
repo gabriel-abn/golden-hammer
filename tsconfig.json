@@ -31,10 +31,10 @@
         "src/domain/*"
       ],
       "@application/*": [
-        "src/domain/*"
+        "src/application/*"
       ],
       "@presentation/*": [
-        "src/domain/*"
+        "src/presentation/*"
       ],
       "@utils/*": [
         "src/utils/*"
