@@ -20,10 +20,10 @@ export class ResgisterClientUseCase {
 
   async execute(
     data: ResgisterClient.Request
-  ): Promise<ResgisterClient.Response> {
+  ): Promise<ResgisterClient.Response | Error> {
     try {
       if (await this.repository.getByCPF(data.cpf)) {
-        throw new ApplicationError(
+        return new ApplicationError(
           "Client already exists",
           "RegisterClientUseCase"
         );
@@ -35,7 +35,7 @@ export class ResgisterClientUseCase {
 
       return { clientId };
     } catch (error) {
-      throw new ApplicationError("Unexpected error", "RegisterClientUseCase");
+      return new ApplicationError("Unexpected error", "RegisterClientUseCase");
     }
   }
 }
