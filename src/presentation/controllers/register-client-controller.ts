@@ -42,7 +42,7 @@ export class RegisterClientController implements Controller {
         body: response,
       };
     } catch (error) {
-      throw new ServerError();
+      throw new ServerError(error).toString();
     }
   }
 }

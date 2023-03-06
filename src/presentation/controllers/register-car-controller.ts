@@ -31,6 +31,13 @@ export class RegisterCarController implements Controller {
 
       const response = await this.useCase.execute(request);
 
+      if (response instanceof Error) {
+        return {
+          status: 404,
+          body: response,
+        };
+      }
+
       return {
         status: 200,
         body: response,
@@ -38,7 +45,7 @@ export class RegisterCarController implements Controller {
     } catch (error) {
       return {
         status: 500,
-        body: new ServerError().toString(),
+        body: new ServerError(error).toString(),
       };
     }
   }
