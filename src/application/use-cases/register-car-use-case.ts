@@ -4,7 +4,7 @@ import { IIdentifierGenerator } from "../common/identifier-generator";
 import { ICarRepository } from "../repositories/car-respository";
 import { IClientRepository } from "../repositories/client-repository";
 
-namespace RegisterCar {
+export namespace RegisterCar {
   export type Request = {
     plate: string;
     color: string;
