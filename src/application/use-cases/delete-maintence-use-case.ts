@@ -1,7 +1,7 @@
 import { ApplicationError } from "../common/application-error";
 import { IMaintenceRepository } from "../repositories/maintence-repository";
 
-namespace DeleteMaintence {
+export namespace DeleteMaintence {
   export type Request = {
     maintenceId: string;
   };

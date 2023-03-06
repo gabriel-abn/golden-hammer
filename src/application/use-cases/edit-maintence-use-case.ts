@@ -2,7 +2,7 @@ import { Maintence, MaintenceStatus } from "@domain/Maintence";
 import { ApplicationError } from "../common/application-error";
 import { IMaintenceRepository } from "../repositories/maintence-repository";
 
-namespace EditMaintence {
+export namespace EditMaintence {
   export type Request = {
     id_maintence: string;
     maintence: Partial<{

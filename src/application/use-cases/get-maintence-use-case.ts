@@ -2,7 +2,7 @@ import { MaintenceProps } from "@domain/Maintence";
 import { ApplicationError } from "../common/application-error";
 import { IMaintenceRepository } from "../repositories/maintence-repository";
 
-namespace GetMaintence {
+export namespace GetMaintence {
   export type Request = {
     maintenceId: string;
   };
