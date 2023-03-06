@@ -1,7 +1,7 @@
 import { PresentationError } from "./presentation-error";
 
 export class ServerError extends PresentationError {
-  constructor() {
-    super("Server error", 500);
+  constructor(error: any) {
+    super("An unexpected error happened: " + error, 500);
   }
 }
