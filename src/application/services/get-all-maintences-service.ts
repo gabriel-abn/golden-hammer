@@ -1,10 +1,10 @@
-import { Maintence } from "@domain/Maintence";
+import { MaintenceProps } from "@domain/Maintence";
 import { ApplicationError } from "../common/application-error";
 import { IMaintenceRepository } from "../repositories/maintence-repository";
 
-namespace GetAllMaintences {
+export namespace GetAllMaintences {
   export type Response = {
-    maintences: Maintence[] | null;
+    maintences: MaintenceProps[] | null;
   };
 }
 
