@@ -4,7 +4,7 @@ import { IIdentifierGenerator } from "../common/identifier-generator";
 import { ICarRepository } from "../repositories/car-respository";
 import { IMaintenceRepository } from "../repositories/maintence-repository";
 
-namespace CreateMainteince {
+export namespace CreateMainteince {
   export type Request = {
     initialDate: Date;
     expectedDate: Date;
