@@ -1,8 +1,5 @@
 import { ApplicationError } from "@application/common";
-import {
-  ResgisterClient,
-  ResgisterClientUseCase,
-} from "@application/use-cases";
+import { RegisterClient, ResgisterClientUseCase } from "@application/use-cases";
 import { InvalidMissingParams, ServerError } from "@presentation/errors";
 import { HttpResponse, IParamsValidator } from "@presentation/protocols";
 import { Controller } from "@presentation/protocols/controller";
@@ -10,10 +7,10 @@ import { Controller } from "@presentation/protocols/controller";
 export class RegisterClientController implements Controller {
   constructor(
     private useCase: ResgisterClientUseCase,
-    private validator: IParamsValidator
+    private validator: IParamsValidator<RegisterClient.Request>
   ) {}
 
-  async handle(request: ResgisterClient.Request): Promise<HttpResponse> {
+  async handle(request: RegisterClient.Request): Promise<HttpResponse> {
     try {
       if (!request) {
         return {
