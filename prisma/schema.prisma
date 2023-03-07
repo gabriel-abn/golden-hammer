@@ -9,3 +9,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Car {
+  id        String      @id @default(uuid())
+  plate     String
+  color     String
+  model     String
+  brand     String
+  owner     Client      @relation(fields: [cpfOwner], references: [cpf])
+  cpfOwner  String
+  Maintence Maintence[]
+}
+
+model Client {
+  name      String
+  cpf       String   @id
+  cnh       String
+  birthdate DateTime
+  email     String
+  Car       Car[]
+}
+
+model Maintence {
+  id_maintence String   @id @default(uuid())
+  initialDate  DateTime
+  expectedDate DateTime
+  car          Car      @relation(fields: [id_car], references: [id])
+  id_car       String
+  status       String
+  description  String
+  price        Float
+}
