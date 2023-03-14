@@ -15,7 +15,8 @@
   },
   "scripts": {
     "test": "jest --max-workers=50%",
-    "test:watch": "jest --max-workers=50% --watch"
+    "test:watch": "jest --max-workers=50% --watch",
+    "start": "ts-node-dev index.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
