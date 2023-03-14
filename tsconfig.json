@@ -36,6 +36,9 @@
       "@presentation/*": [
         "src/presentation/*"
       ],
+      "@infra/*": [
+        "src/infra/*"
+      ],
       "@utils/*": [
         "src/utils/*"
       ],
