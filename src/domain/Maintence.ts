@@ -1,4 +1,4 @@
-import { DomainError } from "./common";
+import { DomainError, Entity } from "./common";
 
 export enum MaintenceStatus {
   EM_CONSERTO = "EM CONSERTO",
@@ -17,19 +17,9 @@ export type MaintenceProps = {
   price: number;
 };
 
-export class Maintence {
-  private constructor(private params: MaintenceProps) {}
-
-  public getInfo() {
-    return {
-      status: this.params.status,
-      price: this.params.price,
-      description: this.params.description,
-    };
-  }
-
-  public getDescription() {
-    return this.params.description;
+export class Maintence extends Entity<MaintenceProps> {
+  private constructor(private params: MaintenceProps) {
+    super(params);
   }
 
   public static create(props: MaintenceProps): Maintence {

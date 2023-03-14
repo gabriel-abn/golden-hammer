@@ -1,4 +1,4 @@
-import { DomainError } from "./common";
+import { DomainError, Entity } from "./common";
 
 export type ClientProps = {
   name: string;
@@ -8,8 +8,10 @@ export type ClientProps = {
   email: string;
 };
 
-export class Client {
-  private constructor(private params: ClientProps) {}
+export class Client extends Entity<ClientProps> {
+  private constructor(params: ClientProps) {
+    super(params);
+  }
 
   public static create(params: ClientProps): Client {
     let errors: string[] = [];

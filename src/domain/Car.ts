@@ -1,4 +1,4 @@
-import { DomainError } from "./common";
+import { DomainError, Entity } from "./common";
 
 export type CarProps = {
   id: string;
@@ -9,17 +9,10 @@ export type CarProps = {
   cpfOwner: string;
 };
 
-export class Car {
-  private constructor(private params: CarProps) {}
-
-  public getCarInfo() {
-    return {
-      model: this.params.model,
-      brand: this.params.brand,
-      plate: this.params.plate,
-    };
+export class Car extends Entity<CarProps> {
+  private constructor(params: CarProps) {
+    super(params);
   }
-
   public static create(params: CarProps): Car {
     let errors: string[] = [];
 
