@@ -39,4 +39,5 @@ model Maintence {
   status       String
   description  String
   price        Float
+  created_at   DateTime @default(now())
 }
