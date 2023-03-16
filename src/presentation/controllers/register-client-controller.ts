@@ -1,13 +1,18 @@
 import { ApplicationError } from "@application/common";
-import { RegisterClient, ResgisterClientUseCase } from "@application/use-cases";
+import { RegisterClient, RegisterClientUseCase } from "@application/use-cases";
 import { InvalidMissingParams, ServerError } from "@presentation/errors";
-import { HttpResponse, IParamsValidator } from "@presentation/protocols";
+import {
+  HttpResponse,
+  IDateFormater,
+  IParamsValidator,
+} from "@presentation/protocols";
 import { Controller } from "@presentation/protocols/controller";
 
 export class RegisterClientController implements Controller {
   constructor(
-    private useCase: ResgisterClientUseCase,
-    private validator: IParamsValidator<RegisterClient.Request>
+    private useCase: RegisterClientUseCase,
+    private validator: IParamsValidator<RegisterClient.Request>,
+    private dateFormatter: IDateFormater
   ) {}
 
   async handle(request: RegisterClient.Request): Promise<HttpResponse> {
@@ -27,6 +32,10 @@ export class RegisterClientController implements Controller {
           body: new InvalidMissingParams(valid),
         };
       }
+
+      request.birthdate = this.dateFormatter
+        .parse(request.birthdate)
+        .toISOString();
 
       const response = await this.useCase.execute(request);
 
