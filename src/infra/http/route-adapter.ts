@@ -10,11 +10,11 @@ export const adaptRoute = (controller: Controller) => {
     };
     const httpResponse = await controller.handle(request);
     if (httpResponse.status >= 200 && httpResponse.status <= 299) {
-      res.status(httpResponse.status).json(httpResponse.body);
+      res.status(httpResponse.status).send({ response: httpResponse.body });
     } else {
-      res.status(httpResponse.status).json({
-        error: httpResponse.body.message,
-      });
+      res
+        .status(httpResponse.status)
+        .send({ error: httpResponse.body, status: httpResponse.status });
     }
   };
 };
