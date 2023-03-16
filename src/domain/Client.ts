@@ -4,7 +4,7 @@ export type ClientProps = {
   name: string;
   cpf: string;
   cnh: string;
-  birthdate: Date;
+  birthdate: string;
   email: string;
 };
 
@@ -15,10 +15,6 @@ export class Client extends Entity<ClientProps> {
 
   public static create(params: ClientProps): Client {
     let errors: string[] = [];
-
-    if (new Date().getFullYear() - params.birthdate.getFullYear() < 18) {
-      errors.push("Invalid age");
-    }
 
     if (errors.length > 0) {
       throw new DomainError({ error: errors, class: "Client" });
