@@ -7,7 +7,7 @@ export namespace RegisterClient {
     name: string;
     cpf: string;
     cnh: string;
-    birthdate: Date;
+    birthdate: string;
     email: string;
   };
   export type Response = {
@@ -15,14 +15,16 @@ export namespace RegisterClient {
   };
 }
 
-export class ResgisterClientUseCase {
+export class RegisterClientUseCase {
   constructor(private repository: IClientRepository) {}
 
   async execute(
     data: RegisterClient.Request
   ): Promise<RegisterClient.Response | Error> {
     try {
-      if (await this.repository.getByCPF(data.cpf)) {
+      const exists = await this.repository.getByCPF(data.cpf);
+
+      if (exists) {
         return new ApplicationError(
           "Client already exists",
           "RegisterClientUseCase"
