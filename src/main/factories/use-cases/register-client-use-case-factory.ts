@@ -1,8 +1,8 @@
 import { RegisterClientUseCase } from "@application/use-cases";
-import { PrismaDatabase } from "@infra/database/prisma";
+import { PostgresClient } from "@infra/database/postgres";
 import { ClientRepository } from "@infra/database/repositories";
 
 export const makeRegisterClientUseCase = (): RegisterClientUseCase => {
-  const clientRepository = new ClientRepository(new PrismaDatabase());
+  const clientRepository = new ClientRepository(new PostgresClient());
   return new RegisterClientUseCase(clientRepository);
 };
