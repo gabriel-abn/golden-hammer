@@ -1,17 +1,17 @@
 import { DomainError, Entity } from "./common";
 
 export enum MaintenceStatus {
-  EM_CONSERTO = "EM CONSERTO",
-  AGENDADO = "AGENDADO",
-  PRONTO = "PRONTO",
-  EM_ATRASO = "EM ATRASO",
+  "EM CONSERTO",
+  "AGENDADO",
+  "PRONTO",
+  "EM ATRASO",
 }
 
 export type MaintenceProps = {
   id_maintence: string;
   initialDate: Date;
   expectedDate: Date;
-  id_car: string;
+  carPlate: string;
   status: MaintenceStatus;
   description: string;
   price: number;
@@ -38,7 +38,7 @@ export class Maintence extends Entity<MaintenceProps> {
     }
 
     if (props.expectedDate.getTime() <= Date.now()) {
-      props.status = MaintenceStatus.EM_ATRASO;
+      props.status = MaintenceStatus["EM ATRASO"];
     }
 
     if (errors.length > 0) {
