@@ -10,15 +10,12 @@ import { Router } from "express";
 
 export const maintenceRoutes = Router();
 
-maintenceRoutes.post("/maintence", adaptRoute(makeCreateMaintenceController()));
+maintenceRoutes.post("/", adaptRoute(makeCreateMaintenceController()));
 
-maintenceRoutes.get("/maintence", adaptRoute(makeGetAllMaintencesController()));
+maintenceRoutes.get("/", adaptRoute(makeGetAllMaintencesController()));
 
-maintenceRoutes.get("/maintence/:id", adaptRoute(makeGetMaintenceController()));
+maintenceRoutes.get("/:plate", adaptRoute(makeGetMaintenceController()));
 
-maintenceRoutes.put("/maintence", adaptRoute(makeEditMaintenceController()));
+maintenceRoutes.put("/:plate", adaptRoute(makeEditMaintenceController()));
 
-maintenceRoutes.delete(
-  "/maintence",
-  adaptRoute(makeDeleteMaintenceController())
-);
+maintenceRoutes.delete("/:plate", adaptRoute(makeDeleteMaintenceController()));
