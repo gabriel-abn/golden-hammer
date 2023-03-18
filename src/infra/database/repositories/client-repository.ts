@@ -13,19 +13,21 @@ export class ClientRepository implements IClientRepository {
         .execute(
           `
         INSERT INTO "Client"
-        (name, cpf, cnh, birthdate, email)
+        (name, cpf, cnh, birthDate, email)
         VALUES 
         (
           '${props.name}',
           '${props.cpf}',
           '${props.cnh}',
-          '${props.birthdate}',
+          '${props.birthdate.toUTCString()}',
           '${props.email}'
         )
         RETURNING email
       `
         )
-        .then((res) => res[0]);
+        .then((res) => {
+          return res.email;
+        });
 
       return response;
     } catch (error) {
@@ -42,7 +44,9 @@ export class ClientRepository implements IClientRepository {
         WHERE cpf = '${cpf}'
       `
         )
-        .then((res) => res[0]);
+        .then((res) => {
+          return res[0];
+        });
 
       return response;
     } catch (error) {
