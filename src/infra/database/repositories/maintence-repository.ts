@@ -1,16 +1,16 @@
 import { IMaintenceRepository } from "@application/repositories";
-import { Maintence, MaintenceProps } from "@domain/Maintence";
+import { Maintence, MaintenceProps, MaintenceStatus } from "@domain/Maintence";
 import { RelationalDatabase } from "../relational-database";
 
 export class MaintenceRepository implements IMaintenceRepository {
   constructor(private database: RelationalDatabase) {}
 
-  async getByID(id: string): Promise<MaintenceProps> {
+  async getByPlate(plate: string): Promise<MaintenceProps> {
     try {
       const response = await this.database
         .query(
           `
-        SELECT * FROM "Maintence" WHERE "id_maintence" = '${id}';
+        SELECT * FROM "Maintence" WHERE "carPlate" = '${plate}';
       `
         )
         .then((res) => res[0]);
@@ -28,21 +28,21 @@ export class MaintenceRepository implements IMaintenceRepository {
         .query(
           `
         INSERT INTO "Maintence"
-        ("id_maintence", "initialDate", "expectedDate", "id_car", "status", "description", "price")
+        ("id_maintence", "initialDate", "expectedDate", "carPlate", "status", "description", "price")
         VALUES
         (
           '${props.id_maintence}',
-          '${props.initialDate}',
-          '${props.expectedDate}',
-          '${props.id_car}',
-          '${props.status}',
+          '${props.initialDate.toUTCString()}',
+          '${props.expectedDate.toUTCString()}',
+          '${props.carPlate}',
+          '${MaintenceStatus[props.status]}',
           '${props.description}',
           '${props.price}'
         )
         RETURNING id_maintence
       `
         )
-        .then((res) => res[0]);
+        .then((res) => res[0].id_maintence);
 
       return response;
     } catch (error) {
@@ -75,11 +75,11 @@ export class MaintenceRepository implements IMaintenceRepository {
         SET
           "initialDate" = '${props.initialDate}',
           "expectedDate" = '${props.expectedDate}',
-          "id_car" = '${props.id_car}',
+          "carPlate" = '${props.carPlate}',
           "status" = '${props.status}',
           "description" = '${props.description}',
           "price" = '${props.price}'
-        WHERE "id_maintence" = '${props.id_maintence}'
+        WHERE "carPlate" = '${props.carPlate}'
         RETURNING "id_maintence"
       `
         )
@@ -90,12 +90,12 @@ export class MaintenceRepository implements IMaintenceRepository {
       throw new Error(error);
     }
   }
-  async delete(id: string): Promise<boolean> {
+  async delete(plate: string): Promise<boolean> {
     try {
       const response = await this.database
         .query(
           `
-        DELETE FROM "Maintence" WHERE "id_maintence" = '${id}';
+        DELETE FROM "Maintence" WHERE "carPlate" = '${plate}';
       `
         )
         .then((res) => res[0]);
