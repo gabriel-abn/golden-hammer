@@ -26,6 +26,7 @@ export class RegisterCarUseCase {
 
   async execute(data: RegisterCar.Request): Promise<RegisterCar.Response> {
     const client = await this.clientRepository.getByCPF(data.cpfOwner);
+
     if (!client) {
       throw new ApplicationError("Client does not exist", "RegisterCarUseCase");
     }
