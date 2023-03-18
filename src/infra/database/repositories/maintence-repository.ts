@@ -10,7 +10,11 @@ export class MaintenceRepository implements IMaintenceRepository {
       const response = await this.database
         .query(
           `
-        SELECT * FROM "Maintence" WHERE "carPlate" = '${plate}';
+        SELECT * 
+        FROM "Maintence" 
+        WHERE "carPlate" = '${plate}' 
+        ORDER BY "created_at" DESC 
+        LIMIT 1;
       `
         )
         .then((res) => res[0]);
@@ -73,17 +77,17 @@ export class MaintenceRepository implements IMaintenceRepository {
           `
         UPDATE "Maintence"
         SET
-          "initialDate" = '${props.initialDate}',
-          "expectedDate" = '${props.expectedDate}',
+          "initialDate" = '${props.initialDate.toUTCString()}',
+          "expectedDate" = '${props.expectedDate.toUTCString()}',
           "carPlate" = '${props.carPlate}',
-          "status" = '${props.status}',
+          "status" = '${MaintenceStatus[props.status]}',
           "description" = '${props.description}',
           "price" = '${props.price}'
         WHERE "carPlate" = '${props.carPlate}'
         RETURNING "id_maintence"
       `
         )
-        .then((res) => res[0]);
+        .then((res) => res[0].id_maintence);
 
       return response;
     } catch (error) {
@@ -98,7 +102,9 @@ export class MaintenceRepository implements IMaintenceRepository {
         DELETE FROM "Maintence" WHERE "carPlate" = '${plate}';
       `
         )
-        .then((res) => res[0]);
+        .then(() => {
+          return true;
+        });
 
       return response;
     } catch (error) {
