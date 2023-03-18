@@ -11,7 +11,7 @@ export namespace RegisterClient {
     email: string;
   };
   export type Response = {
-    clientId: string;
+    clientEmail: string;
   };
 }
 
@@ -31,12 +31,16 @@ export class RegisterClientUseCase {
         );
       }
 
-      const client = Client.create(data);
+      const client = Client.create({
+        ...data,
+        birthdate: new Date(data.birthdate),
+      });
 
-      const clientId = await this.repository.create(client);
+      const clientEmail = await this.repository.create(client);
 
-      return { clientId };
+      return { clientEmail: clientEmail };
     } catch (error) {
+      console.log(error);
       return new ApplicationError("Unexpected error", "RegisterClientUseCase");
     }
   }
