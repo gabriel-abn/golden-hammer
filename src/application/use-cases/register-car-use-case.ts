@@ -25,26 +25,27 @@ export class RegisterCarUseCase {
   ) {}
 
   async execute(data: RegisterCar.Request): Promise<RegisterCar.Response> {
-    try {
-      if (!(await this.clientRepository.getByCPF(data.cpfOwner))) {
-        throw new ApplicationError(
-          "Client does not exist",
-          "RegisterCarUseCase"
-        );
-      }
-
-      if (await this.repository.getByPlate(data.plate)) {
-        throw new ApplicationError("Car already exists", "RegisterCarUseCase");
-      }
-
-      const id = this.idGenerator.generate();
-
-      const car = Car.create({ ...data, id: id });
-      const carId = await this.repository.create(car);
-
-      return { carId };
-    } catch (error) {
-      throw new ApplicationError("Unexpected error", "RegisterCarUseCase");
+    const client = await this.clientRepository.getByCPF(data.cpfOwner);
+    if (!client) {
+      throw new ApplicationError("Client does not exist", "RegisterCarUseCase");
     }
+
+    const existCar = await this.repository.getByPlate(data.plate);
+
+    if (existCar) {
+      throw new ApplicationError("Car already exists", "RegisterCarUseCase");
+    }
+
+    const id = this.idGenerator.generate();
+
+    if (!id) {
+      throw new ApplicationError("Could not resolve ID", "RegisterCarUseCase");
+    }
+
+    const car = Car.create({ ...data, id: id });
+
+    const carId = await this.repository.create(car);
+
+    return { carId };
   }
 }
