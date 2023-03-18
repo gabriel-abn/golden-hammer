@@ -1,5 +1,5 @@
 import { CreateMainteinceUseCase } from "@application/use-cases";
-import { PrismaDatabase } from "@infra/database/prisma";
+import { PostgresClient } from "@infra/database/postgres";
 import {
   CarRepository,
   MaintenceRepository,
@@ -7,8 +7,8 @@ import {
 import { IDGenerator } from "@infra/validator";
 
 export const makeCreateMaintenceUseCase = (): CreateMainteinceUseCase => {
-  const maintenceRepository = new MaintenceRepository(new PrismaDatabase());
-  const carRepository = new CarRepository(new PrismaDatabase());
+  const maintenceRepository = new MaintenceRepository(new PostgresClient());
+  const carRepository = new CarRepository(new PostgresClient());
   return new CreateMainteinceUseCase(
     maintenceRepository,
     carRepository,
