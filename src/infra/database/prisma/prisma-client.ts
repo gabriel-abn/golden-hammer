@@ -8,7 +8,9 @@ export class PrismaDatabase implements RelationalDatabase {
   }
   async query(query: string): Promise<any> {
     try {
+      await this.prisma.$connect();
       const response = await this.prisma.$queryRawUnsafe(query);
+      await this.prisma.$disconnect();
 
       return response;
     } catch (error) {
@@ -17,8 +19,9 @@ export class PrismaDatabase implements RelationalDatabase {
   }
   async execute(query: string): Promise<any> {
     try {
+      await this.prisma.$connect();
       const response = await this.prisma.$executeRawUnsafe(query);
-
+      await this.prisma.$disconnect();
       return response;
     } catch (error) {
       throw new Error(error);
