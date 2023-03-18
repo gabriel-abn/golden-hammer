@@ -9,8 +9,9 @@ export class ClientRepository implements IClientRepository {
     try {
       const props = client.getProps();
 
-      const response = await this.database.execute(
-        `
+      const response = await this.database
+        .execute(
+          `
         INSERT INTO "Client"
         (name, cpf, cnh, birthdate, email)
         VALUES 
@@ -23,7 +24,8 @@ export class ClientRepository implements IClientRepository {
         )
         RETURNING email
       `
-      );
+        )
+        .then((res) => res[0]);
 
       return response;
     } catch (error) {
@@ -32,13 +34,15 @@ export class ClientRepository implements IClientRepository {
   }
   async getByCPF(cpf: string): Promise<ClientProps> {
     try {
-      const response = await this.database.query(
-        `
+      const response = await this.database
+        .query(
+          `
         SELECT * 
         FROM "Client" 
-        WHERE cpf = '${cpf}';
+        WHERE cpf = '${cpf}'
       `
-      );
+        )
+        .then((res) => res[0]);
 
       return response;
     } catch (error) {
