@@ -7,9 +7,13 @@ export class MaintenceRepository implements IMaintenceRepository {
 
   async getByID(id: string): Promise<MaintenceProps> {
     try {
-      const response = await this.database.query(`
+      const response = await this.database
+        .query(
+          `
         SELECT * FROM "Maintence" WHERE "id_maintence" = '${id}';
-      `);
+      `
+        )
+        .then((res) => res[0]);
 
       return response;
     } catch (error) {
@@ -20,7 +24,9 @@ export class MaintenceRepository implements IMaintenceRepository {
     try {
       const props = maintence.getProps();
 
-      const response = await this.database.query(`
+      const response = await this.database
+        .query(
+          `
         INSERT INTO "Maintence"
         ("id_maintence", "initialDate", "expectedDate", "id_car", "status", "description", "price")
         VALUES
@@ -34,7 +40,9 @@ export class MaintenceRepository implements IMaintenceRepository {
           '${props.price}'
         )
         RETURNING id_maintence
-      `);
+      `
+        )
+        .then((res) => res[0]);
 
       return response;
     } catch (error) {
@@ -43,9 +51,13 @@ export class MaintenceRepository implements IMaintenceRepository {
   }
   async getAll(): Promise<MaintenceProps[]> {
     try {
-      const response = await this.database.query(`
+      const response = await this.database
+        .query(
+          `
         SELECT * FROM "Maintence";
-      `);
+      `
+        )
+        .then((res) => res);
 
       return response;
     } catch (error) {
@@ -56,7 +68,9 @@ export class MaintenceRepository implements IMaintenceRepository {
     try {
       const props = maintence.getProps();
 
-      const response = await this.database.query(`
+      const response = await this.database
+        .query(
+          `
         UPDATE "Maintence"
         SET
           "initialDate" = '${props.initialDate}',
@@ -67,7 +81,9 @@ export class MaintenceRepository implements IMaintenceRepository {
           "price" = '${props.price}'
         WHERE "id_maintence" = '${props.id_maintence}'
         RETURNING "id_maintence"
-      `);
+      `
+        )
+        .then((res) => res[0]);
 
       return response;
     } catch (error) {
@@ -76,9 +92,13 @@ export class MaintenceRepository implements IMaintenceRepository {
   }
   async delete(id: string): Promise<boolean> {
     try {
-      const response = await this.database.query(`
+      const response = await this.database
+        .query(
+          `
         DELETE FROM "Maintence" WHERE "id_maintence" = '${id}';
-      `);
+      `
+        )
+        .then((res) => res[0]);
 
       return response;
     } catch (error) {
