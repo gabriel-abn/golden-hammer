@@ -1,8 +1,8 @@
 import { IIdentifierGenerator } from "@application/common";
-import { randomUUID } from "crypto";
+import uuid4 from "uuid4";
 
 export class IDGenerator implements IIdentifierGenerator {
   generate(): string {
-    return randomUUID();
+    return uuid4();
   }
 }
