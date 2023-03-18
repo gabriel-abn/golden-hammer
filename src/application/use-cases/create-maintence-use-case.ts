@@ -1,4 +1,4 @@
-import { Maintence, MaintenceStatus } from "@domain/Maintence";
+import { Maintence } from "@domain/Maintence";
 import { ApplicationError } from "../common/application-error";
 import { IIdentifierGenerator } from "../common/identifier-generator";
 import { ICarRepository } from "../repositories/car-respository";
@@ -8,8 +8,8 @@ export namespace CreateMainteince {
   export type Request = {
     initialDate: string;
     expectedDate: string;
-    id_car: string;
-    status: MaintenceStatus;
+    carPlate: string;
+    status: number;
     description: string;
     price: number;
   };
@@ -29,20 +29,19 @@ export class CreateMainteinceUseCase {
     data: CreateMainteince.Request
   ): Promise<CreateMainteince.Response | Error> {
     try {
-      var errors: string[] = [];
+      const exists = await this.repository.getByPlate(data.carPlate);
 
-      if (await this.repository.getByID(data.id_car)) {
-        errors.push("Car already in maintence");
+      if (exists) {
+        return new ApplicationError(
+          "Car already in maintence",
+          "CreateMaintenceUseCase"
+        );
       }
 
-      const car = await this.carRepository.getById(data.id_car);
+      const car = await this.carRepository.getByPlate(data.carPlate);
 
       if (!car) {
-        errors.push("Car not found");
-      }
-
-      if (errors.length > 0) {
-        throw new ApplicationError(errors, "Create Mainteince", "error");
+        return new ApplicationError("Car not found", "CreateMaintenceUseCase");
       }
 
       const newId = this.idGen.generate();
@@ -52,13 +51,13 @@ export class CreateMainteinceUseCase {
         expectedDate: new Date(data.expectedDate),
         initialDate: new Date(data.initialDate),
         id_maintence: newId,
-        id_car: car.id,
+        carPlate: car.plate,
       });
       const maintenceID = await this.repository.create(maintence);
 
-      return { maintenceID };
+      return { maintenceID: maintenceID };
     } catch (error) {
-      return new ApplicationError("Unexpected error", "CreateMaintenceUseCase");
+      throw new ApplicationError("Unexpected error", "CreateMaintenceUseCase");
     }
   }
 }
