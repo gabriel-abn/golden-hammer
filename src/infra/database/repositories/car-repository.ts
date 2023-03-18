@@ -25,7 +25,7 @@ export class CarRepository implements ICarRepository {
         RETURNING id
       `
         )
-        .then((res) => res[0]);
+        .then((res) => res.id);
 
       return response;
     } catch (error) {
