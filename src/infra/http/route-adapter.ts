@@ -10,7 +10,9 @@ export const adaptRoute = (controller: Controller) => {
     };
     const httpResponse = await controller.handle(request);
     if (httpResponse.status >= 200 && httpResponse.status <= 299) {
-      res.status(httpResponse.status).send({ response: httpResponse.body });
+      res
+        .status(httpResponse.status)
+        .send({ response: httpResponse.body, status: httpResponse.status });
     } else {
       res
         .status(httpResponse.status)
