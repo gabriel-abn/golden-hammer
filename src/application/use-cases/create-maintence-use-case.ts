@@ -6,8 +6,8 @@ import { IMaintenceRepository } from "../repositories/maintence-repository";
 
 export namespace CreateMainteince {
   export type Request = {
-    initialDate: Date;
-    expectedDate: Date;
+    initialDate: string;
+    expectedDate: string;
     id_car: string;
     status: MaintenceStatus;
     description: string;
@@ -49,6 +49,8 @@ export class CreateMainteinceUseCase {
 
       const maintence = Maintence.create({
         ...data,
+        expectedDate: new Date(data.expectedDate),
+        initialDate: new Date(data.initialDate),
         id_maintence: newId,
         id_car: car.id,
       });
