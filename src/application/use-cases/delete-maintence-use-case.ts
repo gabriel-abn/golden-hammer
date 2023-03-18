@@ -1,9 +1,9 @@
-import { ApplicationError } from "../common/application-error";
-import { IMaintenceRepository } from "../repositories/maintence-repository";
+import { ApplicationError } from "@application/common";
+import { IMaintenceRepository } from "@application/repositories";
 
 export namespace DeleteMaintence {
   export type Request = {
-    maintenceId: string;
+    plate: string;
   };
   export type Response = {
     status: boolean;
@@ -17,7 +17,7 @@ export class DeleteMaintenceUseCase {
     data: DeleteMaintence.Request
   ): Promise<DeleteMaintence.Response | Error> {
     try {
-      const maintence = await this.repository.getByID(data.maintenceId);
+      const maintence = await this.repository.getByPlate(data.plate);
 
       if (!maintence) {
         return new ApplicationError(
@@ -26,7 +26,7 @@ export class DeleteMaintenceUseCase {
         );
       }
 
-      const status = await this.repository.delete(maintence.id_maintence);
+      const status = await this.repository.delete(maintence.carPlate);
 
       return { status };
     } catch (error) {

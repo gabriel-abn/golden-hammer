@@ -4,7 +4,7 @@ import { IMaintenceRepository } from "../repositories/maintence-repository";
 
 export namespace GetMaintence {
   export type Request = {
-    maintenceId: string;
+    plate: string;
   };
   export type Response = {
     maintence: MaintenceProps;
@@ -18,7 +18,7 @@ export class GetMaintenceUseCase {
     data: GetMaintence.Request
   ): Promise<GetMaintence.Response | Error> {
     try {
-      const maintence = await this.repository.getByID(data.maintenceId);
+      const maintence = await this.repository.getByPlate(data.plate);
 
       if (!maintence) {
         return new ApplicationError(

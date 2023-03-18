@@ -1,15 +1,14 @@
-import { Maintence, MaintenceStatus } from "@domain/Maintence";
-import { ApplicationError } from "../common/application-error";
-import { IMaintenceRepository } from "../repositories/maintence-repository";
+import { ApplicationError } from "@application/common";
+import { IMaintenceRepository } from "@application/repositories";
+import { Maintence } from "@domain/Maintence";
 
 export namespace EditMaintence {
   export type Request = {
-    id_maintence: string;
+    plate: string;
     maintence: Partial<{
       initialDate: Date;
       expectedDate: Date;
-      id_car: string;
-      status: MaintenceStatus;
+      status: number;
       description: string;
       price: number;
     }>;
@@ -26,19 +25,13 @@ export class EditMaintenceUseCase {
     data: EditMaintence.Request
   ): Promise<EditMaintence.Response | Error> {
     try {
-      let maintenceProps = await this.repository.getByID(data.id_maintence);
+      let maintenceProps = await this.repository.getByPlate(data.plate);
 
       if (!maintenceProps) {
         return new ApplicationError(
           "Maintence not found",
           "EditMaintenceUseCase"
         );
-      }
-
-      for (const prop in data.maintence) {
-        if (data.maintence[prop]) {
-          maintenceProps[prop] = data.maintence[prop];
-        }
       }
 
       const maintence = Maintence.create(maintenceProps);

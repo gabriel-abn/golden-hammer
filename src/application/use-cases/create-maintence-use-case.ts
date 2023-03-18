@@ -30,12 +30,13 @@ export class CreateMainteinceUseCase {
   ): Promise<CreateMainteince.Response | Error> {
     try {
       const exists = await this.repository.getByPlate(data.carPlate);
-
       if (exists) {
-        return new ApplicationError(
-          "Car already in maintence",
-          "CreateMaintenceUseCase"
-        );
+        if (exists.status.toString() != "PRONTO") {
+          return new ApplicationError(
+            "Car already in maintence",
+            "CreateMaintenceUseCase"
+          );
+        }
       }
 
       const car = await this.carRepository.getByPlate(data.carPlate);
@@ -49,7 +50,7 @@ export class CreateMainteinceUseCase {
       const maintence = Maintence.create({
         ...data,
         expectedDate: new Date(data.expectedDate),
-        initialDate: new Date(data.initialDate),
+        initialDate: data.initialDate ? new Date(data.initialDate) : new Date(),
         id_maintence: newId,
         carPlate: car.plate,
       });
@@ -57,6 +58,7 @@ export class CreateMainteinceUseCase {
 
       return { maintenceID: maintenceID };
     } catch (error) {
+      console.log(error);
       throw new ApplicationError("Unexpected error", "CreateMaintenceUseCase");
     }
   }
